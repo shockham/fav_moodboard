@@ -36,14 +36,6 @@ def process_tweet(tweet):
         else:
             print('skipping: %s' % file_name)
 
-page=0
-while True:
-    favourites = api.favorites(page=page)
-    if not favourites:
-        break
-
-    for tweet in favourites:
-        process_tweet(tweet)
-
-    page += 1
+for tweet in tweepy.Cursor(api.favorites).items():
+    process_tweet(tweet)
 
