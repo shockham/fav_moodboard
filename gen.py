@@ -45,7 +45,11 @@ def create_page(image_html):
     html = """
     <!DOCTYPE html>
     <html>
-        <head></head>
+        <head>
+            <style type="text/css">
+            img { width: 100px; height: 100px;  }
+            </style>
+        </head>
         <body>
             %s
         </body>
