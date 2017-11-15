@@ -18,9 +18,10 @@ auth.set_access_token(access_token_key, access_token_secret)
 api = tweepy.API(auth)
 
 img_dir = "./img"
-
 if not os.path.isdir(img_dir):
     os.mkdir(img_dir)
+
+image_html = ""
 
 def process_tweet(tweet):
     if 'media' in tweet.entities:
@@ -36,6 +37,25 @@ def process_tweet(tweet):
         else:
             print('skipping: %s' % file_name)
 
-for tweet in tweepy.Cursor(api.favorites).items():
-    process_tweet(tweet)
+        return "<img src=\"%s\"/>\n" % file_name
+    else:
+        return ""
 
+def create_page(image_html):
+    html = """
+    <!DOCTYPE html>
+    <html>
+        <head></head>
+        <body>
+            %s
+        </body>
+    </html>
+    """ % image_html
+
+    with open('index.html', 'wb') as f:
+        f.write(bytes(html, 'utf-8'))
+
+for tweet in tweepy.Cursor(api.favorites).items():
+    image_html += process_tweet(tweet)
+
+create_page(image_html)
