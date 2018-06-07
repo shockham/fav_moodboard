@@ -29,16 +29,15 @@ def process_tweet(tweet):
         media_url = tweet.entities["media"][0]["media_url"]
         file_name = "%s/%s" % (img_dir, media_url.split("/")[-1])
 
-        r = requests.get(media_url)
-
         if not os.path.exists(file_name):
             print("saving: %s" % file_name)
+            r = requests.get(media_url)
             with open(file_name, "wb") as f:
                 f.write(r.content)
         else:
             print("skipping: %s" % file_name)
 
-        return '<img src="%s"/>\n' % file_name
+        return '<div class="img" style="background: no-repeat center / cover url(%s)"></div>\n' % file_name
     else:
         return ""
 
@@ -50,7 +49,7 @@ def create_page(image_html):
     <html>
         <head>
             <style type="text/css">
-            img { width: 100px; height: 100px;  }
+            .img { display: inline-block; width: 200px; height: 200px;  }
             </style>
         </head>
         <body>
